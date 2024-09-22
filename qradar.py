@@ -7,7 +7,7 @@ class QRadar:
         self.session.verify = verify
         self.api_methods = {
             f"{(method:=endpoint.get("http_method").lower())}{(path:=endpoint.get("path"))
-            .replace("/", "_")}": self.api_endpoint_factory(
+            .translate({ord('{'):None, ord('}'): None, ord('/'): ord('_')})}": self.api_endpoint_factory(
                 method, path
             )
             for endpoint in self.api_endpoint_factory("GET", "/help/endpoints")(
@@ -21,7 +21,7 @@ class QRadar:
     def api_endpoint_factory(self, method, url):
         return lambda path=None, json=None, **params: self.session.request(
             method,
-            f"{self.url}/{url}{f'/{path}' if path else ''}",
+            f"{self.url}/{url}{f'/{path}' if path else ''}".format(**params),
             params=params,
             json=json,
         ).json()
