@@ -38,14 +38,6 @@ class Stubgen:
                 args=[
                     ast.arg(arg="self", annotation=None),
                     ast.arg(
-                        arg="path",
-                        annotation=ast.Subscript(
-                            value=ast.Name(id="Optional", ctx=ast.Load()),
-                            slice=ast.Index(value=ast.Name(id="str", ctx=ast.Load())),
-                            ctx=ast.Load(),
-                        ),
-                    ),
-                    ast.arg(
                         arg="json",
                         annotation=ast.Subscript(
                             value=ast.Name(id="Optional", ctx=ast.Load()),
