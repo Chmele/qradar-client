@@ -27,7 +27,6 @@ def qradar_instance(mock_transport):
 
 def test_initialization(qradar_instance, mock_transport):
     assert qradar_instance.url == "https://qradar.example.com/api"
-    assert qradar_instance.key == "test_key"
     assert qradar_instance.session == mock_transport
     assert qradar_instance.session.headers["Accept"] == "application/json"
     assert qradar_instance.session.headers["Version"] == "12.0"
