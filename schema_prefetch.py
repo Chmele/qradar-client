@@ -1,6 +1,6 @@
 import inspect
 import ast
-from qradar import QRadar
+from qradar.client import QRadar
 
 
 def unparse(ast_obj):
@@ -25,7 +25,7 @@ class Stubgen:
         )
         for endpoint in scheme:
             class_def.body.append(self.prepare_method(endpoint))
-        with open("qradar.pyi", "w") as file:
+        with open("qradar/client.pyi", "w") as file:
             file.write(unparse(module))
 
     def prepare_method(self, scheme):
@@ -47,13 +47,23 @@ class Stubgen:
                     ),
                 ],
                 vararg=ast.arg(arg="params", annotation=None),
-                kwonlyargs=[],
-                kw_defaults=[],
+                kwonlyargs=[
+                    ast.arg(
+                        arg=kwarg.get("parameter_name").replace("-", "_") if kwarg.get("parameter_name") != "class" else "_class"
+                    )
+                    for kwarg in scheme.get("parameters")
+                ],
+                kw_defaults=[
+                    ast.Constant(value=param.get("default_value")) for param in scheme.get("parameters", [])
+                ],
                 defaults=[],
                 kwarg=None,
             ),
             body=[
-                ast.Expr(value=ast.Constant(value=f"""{scheme.get('description')}""")),
+                ast.Expr(value=ast.Constant(value=f"""{scheme.get('description')}{"\n".join(
+        f":param {kwarg.get('parameter_name')}: {kwarg.get('description')}"
+        for kwarg in scheme.get("parameters", [])
+    )}""")),
                 ast.Expr(value=ast.Constant(value=...)),
             ],
             decorator_list=[],
