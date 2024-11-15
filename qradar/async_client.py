@@ -20,7 +20,7 @@ class QRadar:
                 )
                 for endpoint in await self.api_endpoint_factory(
                     "GET", "/help/endpoints"
-                )(filter=f"version={self.version}")
+                )(filter=f"version={self.version}", fields="http_method, path")
             }
         )
 
