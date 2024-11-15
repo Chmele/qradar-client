@@ -2,3 +2,5 @@ env/
 **__pycache__
 key.py
 **.pyi
+build/
+*.egg-info
