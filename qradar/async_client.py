@@ -1,6 +1,3 @@
-import asyncio
-
-
 class QRadar:
     def __init__(self, url, key, version, transport, verify=True):
         self.url, self.session = f"{url}/api", transport
@@ -9,9 +6,11 @@ class QRadar:
         )
         self.session.verify = verify
         self.version = version
-        asyncio.run(self.fetch_schema())
 
-    async def fetch_schema(self):
+    def __await__(self):
+        return self.set_methods().__await__()
+
+    async def set_methods(self):
         self.__dict__.update(
             {
                 f"{(method := endpoint.get('http_method').lower())}{(path := endpoint.get('path'))
@@ -20,9 +19,10 @@ class QRadar:
                 )
                 for endpoint in await self.api_endpoint_factory(
                     "GET", "/help/endpoints"
-                )(filter=f"version={self.version}", fields="http_method, path")
+                )(filter=f"version={self.version}")
             }
         )
+        return self
 
     def api_endpoint_factory(self, method, url):
         async def endpoint(json=None, **params):
@@ -33,5 +33,4 @@ class QRadar:
                 json=json,
             )
             return response.json()
-
         return endpoint
