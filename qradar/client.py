@@ -6,8 +6,8 @@ class QRadar:
         )
         self.session.verify = verify
         self.__dict__.update({
-            f"{(method:=endpoint.get("http_method").lower())}{(path:=endpoint.get("path"))
-            .translate({ord('{'):None, ord('}'): None, ord('/'): ord('_')})}": self.api_endpoint_factory(
+            f"""{(method:=endpoint.get("http_method").lower())}{(path:=endpoint.get("path"))
+            .translate({ord('{'):None, ord('}'): None, ord('/'): ord('_')})}""": self.api_endpoint_factory(
                 method.upper(), path
             )
             for endpoint in self.api_endpoint_factory("GET", "/help/endpoints")(
