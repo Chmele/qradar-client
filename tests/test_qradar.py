@@ -17,7 +17,7 @@ def qradar_instance(mock_transport):
     ]
     mock_transport.request.return_value.json.return_value = endpoints_response
     qradar = QRadar(
-        url="https://qradar.example.com",
+        base_url="https://qradar.example.com",
         key="test_key",
         version="12.0",
         transport=mock_transport,
@@ -25,20 +25,12 @@ def qradar_instance(mock_transport):
     )
     return qradar
 
-def test_initialization(qradar_instance, mock_transport):
-    assert qradar_instance.url == "https://qradar.example.com/api"
-    assert qradar_instance.session == mock_transport
-    assert qradar_instance.session.headers["Accept"] == "application/json"
-    assert qradar_instance.session.headers["Version"] == "12.0"
-    assert qradar_instance.session.headers["SEC"] == "test_key"
-    assert qradar_instance.session.verify is True
-
 def test_dynamic_methods_creation(qradar_instance):
     assert hasattr(qradar_instance, "get_users")
     assert hasattr(qradar_instance, "post_offenses")
 
 def test_dynamic_method_calls(qradar_instance, mock_transport):
-    def request_side_effect(method, url, params=None, json=None):
+    def request_side_effect(method, url, params=None, json=None, verify=False, headers=None):
         if method == "GET" and url == "https://qradar.example.com/api/users":
             return Mock(json=lambda: {"users": ["user1", "user2"]})
         elif method == "POST" and url == "https://qradar.example.com/api/offenses":
@@ -59,16 +51,18 @@ def test_dynamic_method_calls(qradar_instance, mock_transport):
         "https://qradar.example.com/api/users",
         params={},
         json=None,
+        headers={"Accept": "application/json", "Version": "12.0", "SEC": "test_key"}
     )
     mock_transport.request.assert_any_call(
         "POST",
         "https://qradar.example.com/api/offenses",
         params={},
         json={"offense": "test"},
+        headers={"Accept": "application/json", "Version": "12.0", "SEC": "test_key"}
     )
 
 def test_dynamic_method_with_params(qradar_instance, mock_transport):
-    def request_side_effect(method, url, params=None, json=None):
+    def request_side_effect(method, url, params=None, json=None, verify=False, headers=None):
         if method == "GET" and url == "https://qradar.example.com/api/users":
             return Mock(json=lambda: {"users": ["user1", "user2"]})
         elif method == "POST" and url == "https://qradar.example.com/api/offenses":
@@ -87,4 +81,5 @@ def test_dynamic_method_with_params(qradar_instance, mock_transport):
         "https://qradar.example.com/api/users",
         params={"filter": "active", "limit": 10},
         json=None,
+        headers={"Accept": "application/json", "Version": "12.0", "SEC": "test_key"}
     )

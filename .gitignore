@@ -1,4 +1,5 @@
 env/
+env10/
 **__pycache__
 key.py
 **.pyi
