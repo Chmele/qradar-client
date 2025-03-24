@@ -11,9 +11,11 @@ class QRadar:
         )
         self.session.verify = verify
         self.version = version
-        asyncio.get_event_loop().run_until_complete(self.fetch_schema())
 
-    async def fetch_schema(self):
+    def __await__(self):
+        return self.set_methods().__await__()
+
+    async def set_methods(self):
         self.__dict__.update(
             {
                 f"{(method := endpoint.get('http_method').lower())}{(path := endpoint.get('path'))
@@ -25,6 +27,7 @@ class QRadar:
                 )(filter=f"version={self.version}")
             }
         )
+        return self
 
     def api_endpoint_factory(self, method, url):
         async def endpoint(json=None, **params):
@@ -38,5 +41,9 @@ class QRadar:
         return endpoint
 
 
-q = QRadar("https://qradar.is.local", KEY, "22.0", httpx.AsyncClient(verify=False))
-print(asyncio.get_event_loop().run_until_complete(q.get_ariel_searches()))
+
+async def main():
+    q = await QRadar("https://qradar.is.local", KEY, "22.0", httpx.AsyncClient(verify=False))
+    print(await q.get_ariel_searches())
+
+asyncio.run(main())
