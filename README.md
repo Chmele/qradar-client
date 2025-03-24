@@ -1,8 +1,11 @@
 # QRadar API python client for scripting
 
-> python3.10 and above supported
+>  [!IMPORTANT]
+>  python3.10 and above supported.
+> 
+>  http libs such as requests or httpx should be installed separately or as optional packages, as described below.
 
-Features:
+## Features:
 - Pulls API schema from QRadar and creates client methods dynamically for the API version specified. This makes this client source code as small as possible;
 - Asyncronous and client with schema caching introduced
 - All the endpoints of QRadar API is mapped to a client method by name;
@@ -20,7 +23,10 @@ Features:
 `pip install qradar[httpx]`
 
 ## Intended usage
-Made to be used as full-featured copypaste drop-in client for scripts where pip installation way be unwanted. Of course, it is not prohibited to install this package with pip.
+>  [!TIP]
+>  Made to be used as full-featured copypaste drop-in client for scripts where pip installation way be unwanted. Clients are used this way in [examples](examples).
+>
+>  Of course, it is not prohibited to install this package with pip.
 
 ## How to use any client (refer to examples for more)
 0) Use any of `import` statements:
@@ -54,7 +60,10 @@ Having:
 > `q.post_reference_data_map_of_sets({"data": ["data"]})`
 
 ## Generating .pyi file for intellisense
-This option may be used for setting up more convenient development environment. Final script version should be delivered without API schema.
+
+> [!IMPORTANT]
+> This option may be used for setting up more convenient development environment. 
+> Final script version should be delivered without API schema.
 
 1) Clone the repository into project folder
 2) Run `python3 schema_prefetch.py` having correct parameters in source code
