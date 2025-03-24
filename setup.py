@@ -7,7 +7,7 @@ with open("README.md") as file:
 setup(
   name = 'qradar',         
   packages = ['qradar'],
-  version = '0.0.1',    
+  version = '0.0.2',
   license='MIT',      
   description = 'QRadar client for python with API schema fetching', 
   long_description = ld,
