@@ -5,10 +5,10 @@
 Features:
 - Pulls API schema from QRadar and creates client methods dynamically for the API version specified. This makes this client source code as small as possible;
 - All the endpoints of QRadar API is mapped to a client method by name;
-- No dependencies introduced, tested with httpx and requests http protocol libs with dependency injection, but ibviously will only work with libs that provide compatible requests-like interface for Session-like object. Of course, wrappers can solve the problem;
+- No dependencies introduced, tested with httpx and requests http protocol libs with dependency injection, but obviously will only work with libs that provide compatible requests-like interface for Session-like object. Of course, wrappers can help with using incompatible libs;
 
 ## Intended usage
-Made to be used as full-featured copypaste drop-in client for scripts where pip installation way be unwanted, also it is lightweight alternative to qradar4py, where the method lookup table only takes 170 times more memory 🙂. Of course, it is not prohibited to import the `qradar.py` file as a module, as it made in examples.
+Made to be used as full-featured copypaste drop-in client for scripts where pip installation way be unwanted, also it is lightweight alternative to qradar4py, where the method lookup table only takes 170 times more memory 🙂. Of course, it is not prohibited to import the `qradar.py` file as a module.
 
 ## How to use
 0) Copy the `qradar.py` file contents right after the imports of script
@@ -20,7 +20,7 @@ Having:
 - qradar.is.local is QRadar console hostname
 - KEY is API key created from console
 - `"22.0"` - replaced with API version you want
-- `requests` imported
+- `requests` imported (and installed)
 
 > Also works with httpx, with minor differences. Refer to examples for details
 
