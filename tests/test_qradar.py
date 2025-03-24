@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import Mock
-from qradar import QRadar
+from qradar.client import QRadar
 
 @pytest.fixture
 def mock_transport():
