@@ -19,7 +19,7 @@ def qradar_client(mock_transport):
     )
 
 def test_constructor_initialization(qradar_client):
-    assert qradar_client.url == "https://example.com/api"
+    assert qradar_client.url == "https://qradar.example.com/api"
     assert qradar_client.version == "14.0"
     assert qradar_client.session.headers == {
         "Accept": "application/json",
