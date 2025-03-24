@@ -11,7 +11,8 @@ class QRadar:
                 method.upper(), path
             )
             for endpoint in self.api_endpoint_factory("GET", "/help/endpoints")(
-                filter=f"version={version}"
+                filter=f"version={version}",
+                fields="http_method, path"
             )
         })
 
