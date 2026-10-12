@@ -29,7 +29,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest
+        pip install pytest pytest-asyncio
     - name: Test with pytest
       run: |
-        python -m pytest tests/test_async.py tests/test_qradar.py
+        python -m pytest tests/test_async.py tests/test_qradar.py tests/test_401.py
