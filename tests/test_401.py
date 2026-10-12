@@ -51,8 +51,8 @@ def mock_async_transport():
 
 def test_dynamic_methods_creation(mock_transport):
     with pytest.raises(
-        AttributeError,
-        match="'str' object has no attribute 'get'",
+        RuntimeError,
+        match="Failed while getting endpoints: .*",
     ):
         QRadar(
             base_url="https://qradar.example.com",
@@ -64,8 +64,8 @@ def test_dynamic_methods_creation(mock_transport):
 @pytest.mark.asyncio
 async def test_async_dynamic_methods_creation(mock_async_transport):
     with pytest.raises(
-        AttributeError,
-        match="'str' object has no attribute 'get'",
+        RuntimeError,
+        match="Failed while getting endpoints: .*",
     ):
         await AsyncQRadar(
             url="https://qradar.example.com",

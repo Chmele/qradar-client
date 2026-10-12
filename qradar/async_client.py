@@ -11,15 +11,18 @@ class QRadar:
         return self.set_methods().__await__()
 
     async def set_methods(self):
+        schema = await self.api_endpoint_factory(
+            "GET", "/help/endpoints"
+        )(filter=f"version={self.version}")
+        if not isinstance(schema, list):
+            raise RuntimeError(f"Failed while getting endpoints: {schema}")
         self.__dict__.update(
             {
                 f"""{(method:=endpoint.get("http_method").lower())}{(path:=endpoint.get("path"))
                 .translate({ord('{'):None, ord('}'): None, ord('/'): ord('_')})}""": self.api_endpoint_factory(
                     method.upper(), path
                 )
-                for endpoint in await self.api_endpoint_factory(
-                    "GET", "/help/endpoints"
-                )(filter=f"version={self.version}")
+                for endpoint in schema
             }
         )
         return self

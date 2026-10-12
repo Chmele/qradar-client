@@ -1,5 +1,5 @@
 import pytest
-from unittest.mock import AsyncMock, MagicMock, Mock
+from unittest.mock import AsyncMock, Mock
 from qradar.async_client import QRadar
 
 @pytest.fixture
@@ -47,7 +47,7 @@ async def test_set_methods(qradar_client, mock_transport):
             AsyncMock(json=lambda:{"unknown"})
     mock_transport.request = AsyncMock()
     mock_transport.request.side_effect = request_side_effect
-    
+
     await qradar_client.set_methods()
     mock_transport.request.assert_awaited_with('GET', 'https://qradar.example.com/api/help/endpoints', params={'filter': 'version=14.0'}, json=None)
     path1 = await qradar_client.get_test_path1(test="test")
